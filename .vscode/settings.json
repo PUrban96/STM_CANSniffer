@@ -1,0 +1,10 @@
+{
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+  "cmake.configureOnOpen": true,
+  "files.associations": {
+    "freertos.h": "c",
+    "cmsis_gcc.h": "c",
+    "cmsis_os.h": "c",
+    "string.h": "c"
+  }
+}
