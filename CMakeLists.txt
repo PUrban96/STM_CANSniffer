@@ -7,7 +7,7 @@ project("PiTer_CAN_Sniffer" C CXX ASM)
 include(cmake/compiler_flags.cmake)
 enable_language(ASM)
 
-set(FREERTOS_CONFIG_FILE_DIRECTORY "C:/Users/Pietia/Desktop/CAN_project_STM/PiTer_CAN/FreeRTOS/Source/include")
+set(FREERTOS_CONFIG_FILE_DIRECTORY "${PROJECT_SOURCE_DIR}/Core/Inc")
 set(FREERTOS_HEAP "4")
 set(FREERTOS_PORT "GCC_ARM_CM4F")
 

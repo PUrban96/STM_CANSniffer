@@ -5,6 +5,9 @@
     "freertos.h": "c",
     "cmsis_gcc.h": "c",
     "cmsis_os.h": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "stillalivesignal.h": "c",
+    "main.h": "c",
+    "led_blink.h": "c"
   }
 }

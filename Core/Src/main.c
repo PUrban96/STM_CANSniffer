@@ -1,29 +1,50 @@
 
 #include "main.h"
-#include "stillAliveSignal.h"
+#include "led_blink.h"
+
+#include "FreeRTOS.h"
+#include "task.h"
+
+static void prvSetupHardware(void);
+void vTaskLedToggle(void);
 
 int main(void)
 {
 
-/* SysTick  - config */
-/* ***************************************** */
-	SysTick_Config(16000000);
-/* ***************************************** */
+	// Hardware configuration
+	prvSetupHardware();
 
-	stillAliveSignal_Init();
-	stillAliveSignal_Start();
+	xTaskCreate(vTaskLedToggle, "stillAliveLED", 200, NULL, 5, NULL);
 
-  while (1)
-  {
+	// Start the scheduler
+	vTaskStartScheduler(); // should never return
 
-  }
+	// Will only get here if there was not enough heap space
 
+	while (1)
+		;
+
+	return 0;
 }
 
-__attribute__((interrupt)) void SysTick_Handler(void)
+static void prvSetupHardware(void)
 {
-	//LED_Blink();
+
 }
 
-
-
+void vTaskLedToggle(void)
+{
+	led_init();
+	for (;;)
+	{
+		if ((GPIOA->ODR & GPIO_ODR_OD5) == 0)
+		{
+			GPIOA->BSRR |= GPIO_BSRR_BS5;
+		}
+		else
+		{
+			GPIOA->BSRR |= GPIO_BSRR_BR5;
+		}
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+	}
+}
