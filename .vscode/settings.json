@@ -8,6 +8,7 @@
     "string.h": "c",
     "stillalivesignal.h": "c",
     "main.h": "c",
-    "led_blink.h": "c"
+    "led_blink.h": "c",
+    "rcc_clock.h": "c"
   }
 }

@@ -28,6 +28,8 @@ set(INCLUDE_DIRS_APP
     Core/Inc
     Core/Src
     Core/Src/DebugModule/stillAliveSignal
+    Core/Src/PcCommunication
+    Core/Src/HwDrivers/RCC_Clock
 )
 
 
@@ -53,6 +55,8 @@ set(C_SRCS_APP
     Core/Src/DebugModule/stillAliveSignal/led_blink.c
     Core/Src/DebugModule/stillAliveSignal/stillAliveSignal.c
     Core/Src/DebugModule/stillAliveSignal/timer2_irq.c
+    Core/Src/PcCommunication/USART2_driver.c
+    Core/Src/HwDrivers/RCC_Clock/RCC_clock.c
 )
 
 
