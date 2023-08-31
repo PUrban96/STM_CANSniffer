@@ -35,6 +35,7 @@ void USART2_init(void)
 
     USART2->BRR = RCCClock_Get_RCC_APB1_Frequency() / USART2_BAUDRATE; // Set USART2 baudrate to 9600
     USART2->CR3 = USART_CR3_DMAT;
+    USART2->SR &= ~(USART_SR_TC);
     USART2->CR1 = USART_CR1_UE | USART_CR1_TE | USART_CR1_RE; // Enable USART2
 
     DMA1_Stream6->CR = DMA_SxCR_CHSEL_2 | DMA_SxCR_DIR_0 | DMA_SxCR_MINC | DMA_SxCR_TCIE;
@@ -52,6 +53,9 @@ void USART2_stop(void)
 
 void USART2_send(const char *message)
 {
+    while (!(USART2->SR & USART_SR_TC))
+        ;
+    USART2->SR &= ~(USART_SR_TC);
     DMA1_Stream6->PAR = (uint32_t)&USART2->DR;
     DMA1_Stream6->M0AR = (uint32_t)message;
     DMA1_Stream6->NDTR = (uint32_t)strlen(message);
