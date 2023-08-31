@@ -1,5 +1,6 @@
 #include "main.h"
 #include "RCC_clock.h"
+#include "IRCC_clock.h"
 
 /* Target */
 /* **************************** */
@@ -39,6 +40,15 @@
 /* **************************** */
 
 /* **************************** */
+
+static const uint32_t RCC_SYSCLK_Frequency = 168000000UL;
+static const uint32_t RCC_HCLK_Frequency = 168000000UL;
+
+static const uint32_t RCC_AHB2_Frequency = 168000000UL;
+static const uint32_t RCC_AHB1_Frequency = 168000000UL;
+
+static const uint32_t RCC_APB2_Frequency = 84000000UL;
+static const uint32_t RCC_APB1_Frequency = 42000000UL;
 
 void RCCClockConfiguration(void)
 {
@@ -90,4 +100,34 @@ void RCCClockConfiguration(void)
         ;
 
     /* ******************************************************************************************************* */
+}
+
+uint32_t RCCClock_Get_RCC_SYSCLK_Frequency(void)
+{
+    return RCC_SYSCLK_Frequency;
+}
+
+uint32_t RCCClock_Get_RCC_HCLK_Frequency(void)
+{
+    return RCC_HCLK_Frequency;
+}
+
+uint32_t RCCClock_Get_RCC_AHB1_Frequency(void)
+{
+    return RCC_AHB1_Frequency;
+}
+
+uint32_t RCCClock_Get_RCC_AHB2_Frequency(void)
+{
+    return RCC_AHB2_Frequency;
+}
+
+uint32_t RCCClock_Get_RCC_APB1_Frequency(void)
+{
+    return RCC_APB1_Frequency;
+}
+
+uint32_t RCCClock_Get_RCC_APB2_Frequency(void)
+{
+    return RCC_APB2_Frequency;
 }

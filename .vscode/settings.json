@@ -9,6 +9,7 @@
     "stillalivesignal.h": "c",
     "main.h": "c",
     "led_blink.h": "c",
-    "rcc_clock.h": "c"
+    "rcc_clock.h": "c",
+    "istillalivetimer.h": "c"
   }
 }
