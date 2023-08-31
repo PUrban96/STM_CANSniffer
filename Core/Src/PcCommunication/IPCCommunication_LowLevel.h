@@ -5,7 +5,7 @@ typedef void (*PCCommLowLevel_Callback_t)(void);
 typedef void (*PCCommLowLevel_Init_t)(void);
 typedef void (*PCCommLowLevel_Start_t)(void);
 typedef void (*PCCommLowLevel_Stop_t)(void);
-typedef void (*PCCommLowLevel_Send_t)(const uint32_t*);
+typedef void (*PCCommLowLevel_Send_t)(const char*);
 //typedef void (*PCCommLowLevel_Subscribe_t)(PCCommLowLevel_Callback_t callback);
 
 typedef struct IPCCommLowLevel

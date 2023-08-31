@@ -10,6 +10,7 @@
     "main.h": "c",
     "led_blink.h": "c",
     "rcc_clock.h": "c",
-    "istillalivetimer.h": "c"
+    "istillalivetimer.h": "c",
+    "system_error": "c"
   }
 }

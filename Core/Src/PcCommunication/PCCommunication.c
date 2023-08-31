@@ -11,7 +11,7 @@ void PCComm_Init(void)
     PCCommunication_LowLevel->start();
 }
 
-void PCComm_SendString(uint32_t *message)
+void PCComm_SendString(const char *message)
 {
     PCCommunication_LowLevel->send(message);
 }

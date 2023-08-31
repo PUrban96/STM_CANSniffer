@@ -36,6 +36,10 @@ void USART2_init(void)
     USART2->BRR = RCCClock_Get_RCC_APB1_Frequency() / USART2_BAUDRATE; // Set USART2 baudrate to 9600
     USART2->CR3 = USART_CR3_DMAT;
     USART2->CR1 = USART_CR1_UE | USART_CR1_TE | USART_CR1_RE; // Enable USART2
+
+    DMA1_Stream6->CR = DMA_SxCR_CHSEL_2 | DMA_SxCR_DIR_0 | DMA_SxCR_MINC | DMA_SxCR_TCIE;
+    DMA1->LIFCR = DMA_HIFCR_CTCIF6;
+    NVIC_EnableIRQ(DMA1_Stream6_IRQn);
 }
 
 void USART2_start(void)
@@ -46,17 +50,11 @@ void USART2_stop(void)
 {
 }
 
-void USART2_send(const uint32_t *message)
+void USART2_send(const char *message)
 {
-    uint32_t test = 'a';
     DMA1_Stream6->PAR = (uint32_t)&USART2->DR;
-    DMA1_Stream6->M0AR = (uint32_t)&test;
-    DMA1_Stream6->NDTR = (uint32_t)1;
-    DMA1_Stream6->CR = DMA_SxCR_PSIZE_1 | DMA_SxCR_MSIZE_1 | 4UL << DMA_SxCR_CHSEL_Pos | DMA_SxCR_DIR_0 | DMA_SxCR_TCIE;
-    USART2->SR &= ~USART_SR_TC;
-
-    DMA1->LIFCR = DMA_HIFCR_CTCIF6;
-    NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+    DMA1_Stream6->M0AR = (uint32_t)message;
+    DMA1_Stream6->NDTR = (uint32_t)strlen(message);
 
     DMA1_Stream6->CR |= DMA_SxCR_EN;
 }
@@ -66,15 +64,5 @@ void DMA1_Stream6_IRQHandler(void)
     if ((DMA1->HISR & DMA_HISR_TCIF6))
     {
         DMA1->HIFCR = DMA_HIFCR_CTCIF6;
-    }
-}
-
-void USART2_IRQHandler(void)
-{
-    if (USART2->SR & USART_SR_RXNE) // Check if USART2 Read data register not empty
-    {
-        USART2->SR &= ~USART_SR_RXNE;
-        uint32_t tmp_char = USART2->DR;
-        USART2->DR = tmp_char;
     }
 }
