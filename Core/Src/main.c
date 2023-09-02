@@ -65,12 +65,10 @@ void vTaskLedToggle(void)
 		if ((GPIOA->ODR & GPIO_ODR_OD5) == 0)
 		{
 			GPIOA->BSRR |= GPIO_BSRR_BS5;
-			PCComm_SendString("LED ON\r\n\0");
 		}
 		else
 		{
 			GPIOA->BSRR |= GPIO_BSRR_BR5;
-			PCComm_SendString("LED OFF\r\n\0");
 		}
 		vTaskDelay(1000 / portTICK_PERIOD_MS);
 	}

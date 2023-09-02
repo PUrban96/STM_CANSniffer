@@ -2,7 +2,6 @@
 #include "USART2.h"
 
 #include "IRCC_clock.h"
-#include <string.h>
 
 /* Alternatife function pin correct config sequence (STM32F4):
     1. GPIO_MODER
@@ -51,14 +50,14 @@ void USART2_stop(void)
 {
 }
 
-void USART2_send(const char *message)
+void USART2_send(const uint8_t *message, uint16_t lenght)
 {
     while (!(USART2->SR & USART_SR_TC))
         ;
     USART2->SR &= ~(USART_SR_TC);
     DMA1_Stream6->PAR = (uint32_t)&USART2->DR;
     DMA1_Stream6->M0AR = (uint32_t)message;
-    DMA1_Stream6->NDTR = (uint32_t)strlen(message);
+    DMA1_Stream6->NDTR = (uint32_t)lenght;
 
     DMA1_Stream6->CR |= DMA_SxCR_EN;
 }
