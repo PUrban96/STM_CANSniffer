@@ -65,6 +65,8 @@ void vTaskLedToggle(void)
 		if ((GPIOA->ODR & GPIO_ODR_OD5) == 0)
 		{
 			GPIOA->BSRR |= GPIO_BSRR_BS5;
+			uint8_t TestData[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+			PCComm_SendCanFrame(0x10, 8, TestData);
 		}
 		else
 		{

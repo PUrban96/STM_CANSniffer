@@ -27,10 +27,9 @@ void PCComm_SendCanFrame(uint32_t CAN_ID, uint8_t CAN_DLC, const uint8_t Data[8]
     NewFrame.data[2] = CAN_ID << 16;
     NewFrame.data[3] = CAN_ID << 24;
     NewFrame.data[4] = CAN_DLC;
-    memcpy(NewFrame.data + 4, Data, 8);
+    memcpy(NewFrame.data + 5, Data, 8);
     // CalculateCRC;
     NewFrame.checksum = 0xFFFF;
 
-    // SendFrame(Add to queue)
-    PCCommunication_LowLevel->send(Data, 8);
+    PCCommTransmiter_Transmite(&NewFrame);
 }

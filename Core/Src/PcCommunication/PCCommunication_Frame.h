@@ -2,8 +2,27 @@
 
 #include "main.h"
 
-#define PCCOMM_FRAME_START_BYTE 'r'
-#define PCCOMM_FRAME_END_BYTE 'n'
+#define PCCOMM_FRAME_BYTE_AMOUNT 19UL
+
+#define PCCOMM_FRAME_START_SIGN '\r'
+#define PCCOMM_FRAME_START_START_BYTE 0UL
+#define PCCOMM_FRAME_START_LENGHT 1UL
+
+#define PCCOMM_FRAME_TYPE_START_BYTE 1UL
+#define PCCOMM_FRAME_TYPE_LENGHT 1UL
+
+#define PCCOMM_FRAME_CMD_START_BYTE 2UL
+#define PCCOMM_FRAME_CMD_LENGHT 1UL
+
+#define PCCOMM_FRAME_DATA_START_BYTE 3UL
+#define PCCOMM_FRAME_DATA_BYTE_LENGHT 13UL
+
+#define PCCOMM_FRAME_CHECKSUM_START_BYTE 16UL
+#define PCCOMM_FRAME_CHECKSUM_LENGHT 2UL
+
+#define PCCOMM_FRAME_END_SIGN '\n'
+#define PCCOMM_FRAME_END_START_BYTE 18UL
+#define PCCOMM_FRAME_END_LENGHT 1UL
 
 typedef enum _PCComm_Type_e
 {
@@ -22,5 +41,5 @@ typedef struct _PCComm_Frame_s
     PCComm_Type_e type;
     PCComm_Command_e command;
     uint16_t checksum;
-    uint8_t data[13];
+    uint8_t data[PCCOMM_FRAME_DATA_BYTE_LENGHT];
 } PCComm_Frame_s;
