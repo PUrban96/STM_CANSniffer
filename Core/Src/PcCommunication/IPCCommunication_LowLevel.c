@@ -10,6 +10,7 @@ IPCCommLowLevel *IPCCommLowLevel_Init()
 	PCCommunication.start = USART2_start;
 	PCCommunication.stop = USART2_stop;
 	PCCommunication.send = USART2_send;
+	PCCommunication.receive = USART2_receive;
 
 	return &PCCommunication;
 }
