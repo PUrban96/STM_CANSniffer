@@ -100,6 +100,12 @@ void RCCClockConfiguration(void)
         ;
 
     /* ******************************************************************************************************* */
+
+    /*  NVIC Priority group*/
+    /* ******************************************************************************************************* */
+    //FreeRTOS: It is recommended to assign all the priority bits to be preempt priority bits, leaving no priority bits as subpriority bits.
+    NVIC_SetPriorityGrouping(3);
+    /* ******************************************************************************************************* */
 }
 
 uint32_t RCCClock_Get_RCC_SYSCLK_Frequency(void)

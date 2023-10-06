@@ -46,11 +46,13 @@ void USART2_init(void)
     // Transmite DMA
     DMA1_Stream6->CR = DMA_SxCR_CHSEL_2 | DMA_SxCR_DIR_0 | DMA_SxCR_MINC | DMA_SxCR_TCIE;
     DMA1->LIFCR = DMA_HIFCR_CTCIF6;
+    NVIC_SetPriority(DMA1_Stream6_IRQn, 5);
     NVIC_EnableIRQ(DMA1_Stream6_IRQn);
 
     // Receive DMA
     DMA1_Stream5->CR = DMA_SxCR_CHSEL_2 | DMA_SxCR_MINC | DMA_SxCR_TCIE;
     DMA1->LIFCR = DMA_HIFCR_CTCIF5;
+    NVIC_SetPriority(DMA1_Stream5_IRQn, 5);
     NVIC_EnableIRQ(DMA1_Stream5_IRQn);
 
     NVIC_EnableIRQ(USART2_IRQn);
@@ -122,6 +124,6 @@ void USART2_IRQHandler(void)
         {
             DMA1_Stream5->CR &= ~(DMA_SxCR_EN); // Disable DMA - it will force Transfer Complete interrupt if it's enabled
         }
-        tmp = tmp;                              // For unused warning
+        tmp = tmp; // For unused warning
     }
 }
