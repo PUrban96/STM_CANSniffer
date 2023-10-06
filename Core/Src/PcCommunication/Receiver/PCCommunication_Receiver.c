@@ -2,14 +2,12 @@
 #include "IPCCommunication_LowLevel.h"
 #include "PCCommunication_Receiver.h"
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#include "OSAL.h"
 
 #include <string.h>
 
-static TaskHandle_t Receiver_TaskHandler = {0};
-static QueueHandle_t ReceiverBuffer_QueueHandler = {0};
+static osal_task_t Receiver_TaskHandler = {0};
+static osal_queue_t ReceiverBuffer_QueueHandler = {0};
 static PCCommLowLevel_Receive_t ReceiveCallback = NULL;
 
 static uint8_t ReceivedMessageBuffer[PCCOMM_FRAME_BYTE_AMOUNT] = {0};
@@ -21,8 +19,8 @@ static void MessageToFrame(PCComm_Frame_s *Frame, const uint8_t *Message);
 bool PCCommReceiver_Init(PCCommLowLevel_Receive_t callback)
 {
     ReceiveCallback = callback;
-    ReceiverBuffer_QueueHandler = xQueueCreate(RECEIVE_QUEUE_SIZE, sizeof(PCComm_Frame_s));
-    xTaskCreate(vTaskPCCommReceiveFrame, "PCComm_Receive", 400, NULL, 6, &Receiver_TaskHandler);
+    ReceiverBuffer_QueueHandler = osal_queue_create(RECEIVE_QUEUE_SIZE, sizeof(PCComm_Frame_s));
+    Receiver_TaskHandler = osal_task_create(vTaskPCCommReceiveFrame, "PCComm_Receive", 400, NULL, 6);
     if (ReceiverBuffer_QueueHandler != NULL && Receiver_TaskHandler != NULL && ReceiveCallback != NULL)
     {
         ReceiveCallback(ReceivedMessageBuffer, PCCOMM_FRAME_BYTE_AMOUNT);
@@ -40,13 +38,8 @@ void PCCommReceiver_AddFrameToBuffer(uint32_t lenght)
     if (CheckIfMessageIsCorrectFrame(ReceivedMessageBuffer, lenght) == true)
     {
         PCComm_Frame_s FrameToAdd = {0};
-        BaseType_t xHigherPriorityTaskWoken = pdFALSE;;
         MessageToFrame(&FrameToAdd, ReceivedMessageBuffer);
-        xQueueSendFromISR(ReceiverBuffer_QueueHandler, &FrameToAdd, &xHigherPriorityTaskWoken);
-        if (xHigherPriorityTaskWoken)
-        {
-            portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-        }
+        osal_queue_send(ReceiverBuffer_QueueHandler, &FrameToAdd, 0, true);
     }
     ReceiveCallback(ReceivedMessageBuffer, PCCOMM_FRAME_BYTE_AMOUNT);
 }
@@ -58,7 +51,7 @@ static void vTaskPCCommReceiveFrame(void *pvParameters)
 
     for (;;)
     {
-        while (xQueueReceive(ReceiverBuffer_QueueHandler, &CurrentFrame, pdMS_TO_TICKS(1000)) == pdPASS)
+        while (osal_queue_receive(ReceiverBuffer_QueueHandler, &CurrentFrame, 1000, false) == true)
         {
             __NOP();
         }
