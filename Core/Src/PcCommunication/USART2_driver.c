@@ -99,6 +99,7 @@ void USART2_MirrorIRQ_Init(void)
     NVIC_EnableIRQ(USART2_IRQn);
 }
 
+/*
 void USART2_IRQHandler(void)
 {
     if (USART2->SR & USART_SR_RXNE) // Check if USART2 Read data register not empty
@@ -108,6 +109,7 @@ void USART2_IRQHandler(void)
         USART2->DR = tmp_char;
     }
 }
+*/
 
 void USART2_MirrorDMA_Init(void)
 {

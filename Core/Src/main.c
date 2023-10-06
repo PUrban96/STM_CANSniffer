@@ -6,19 +6,18 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "stillAliveSignal.h"
-#include "USART2_driver.h"
+#include "PCCommunication.h"
 
 void prvSetupHardware(void);
 void vTaskLedToggle(void);
 
 int main(void)
 {
-	// DMA_Coppy();
-	// DMA_Timer();
-
 	//  Hardware configuration
 	prvSetupHardware();
 	led_init();
+	PCComm_Init();
+
 	// SysTick_Config(168000000ul / 8ul / 2ul);
 	// SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
 	//  stillAliveSignal_Init();
@@ -66,6 +65,8 @@ void vTaskLedToggle(void)
 		if ((GPIOA->ODR & GPIO_ODR_OD5) == 0)
 		{
 			GPIOA->BSRR |= GPIO_BSRR_BS5;
+			uint8_t TestData[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+			PCComm_SendCanFrame(0x10, 8, TestData);
 		}
 		else
 		{
