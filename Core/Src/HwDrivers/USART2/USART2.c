@@ -3,6 +3,10 @@
 
 #include "IRCC_clock.h"
 
+#include "IPCCommunication_LowLevel.h"
+
+static PCCommLowLevel_NewFrame_Callback_t NewFrameCallback = NULL;
+
 /* Alternatife function pin correct config sequence (STM32F4):
     1. GPIO_MODER
     2. GPIO_OTYPER etc.
@@ -18,7 +22,6 @@
     PA3 - RxD
     PA2 - TxD
 */
-static uint8_t TestBuffer[30] = {0};
 static uint32_t LastReceiveLenght = 0;
 
 void USART2_init(void)
@@ -51,8 +54,11 @@ void USART2_init(void)
     NVIC_EnableIRQ(DMA1_Stream5_IRQn);
 
     NVIC_EnableIRQ(USART2_IRQn);
+}
 
-    USART2_receive(TestBuffer, 5);
+void USART2_DMA_TC_Subscribe(PCCommLowLevel_NewFrame_Callback_t callback)
+{
+    NewFrameCallback = callback;
 }
 
 void USART2_start(void)
@@ -91,6 +97,7 @@ void DMA1_Stream5_IRQHandler(void)
     if ((DMA1->HISR & DMA_HISR_TCIF5))
     {
         uint32_t ByteAmount = LastReceiveLenght - DMA1_Stream5->NDTR;
+        NewFrameCallback(ByteAmount);
         DMA1->HIFCR = DMA_HIFCR_CTCIF5;
         DMA1_Stream5->CR |= DMA_SxCR_EN;
     }

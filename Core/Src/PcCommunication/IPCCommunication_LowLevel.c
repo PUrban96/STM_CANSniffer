@@ -7,10 +7,9 @@ static IPCCommLowLevel PCCommunication;
 IPCCommLowLevel *IPCCommLowLevel_Init()
 {
 	PCCommunication.init = USART2_init;
-	PCCommunication.start = USART2_start;
-	PCCommunication.stop = USART2_stop;
 	PCCommunication.send = USART2_send;
 	PCCommunication.receive = USART2_receive;
+	PCCommunication.subscribe = USART2_DMA_TC_Subscribe;
 
 	return &PCCommunication;
 }

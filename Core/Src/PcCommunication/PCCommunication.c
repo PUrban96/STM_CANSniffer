@@ -3,6 +3,7 @@
 #include "IPCCommunication_LowLevel.h"
 #include "PCCommunication_Frame.h"
 #include "PCCommunication_Transmiter.h"
+#include "PCCommunication_Receiver.h"
 
 #include <string.h>
 
@@ -12,8 +13,11 @@ void PCComm_Init(void)
 {
     PCCommunication_LowLevel = IPCCommLowLevel_Init();
     PCCommunication_LowLevel->init();
-    PCCommunication_LowLevel->start();
+    
     PCPCCommTransmiter_Init(PCCommunication_LowLevel->send);
+    PCCommReceiver_Init(PCCommunication_LowLevel->receive);
+
+    PCCommunication_LowLevel->subscribe(PCCommReceiver_AddFrameToBuffer);
 }
 
 void PCComm_SendCanFrame(uint32_t CAN_ID, uint8_t CAN_DLC, const uint8_t Data[8])
