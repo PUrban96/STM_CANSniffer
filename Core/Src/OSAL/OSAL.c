@@ -14,11 +14,23 @@ osal_task_t osal_task_create(osal_task_fun_t task, const char *taskName, const u
     return (osal_task_t)hTask;
 }
 
+void osal_task_delete(osal_task_fun_t task)
+{
+    TaskHandle_t hTask = (TaskHandle_t)task;
+    vTaskDelete(hTask);
+}
+
 osal_queue_t osal_queue_create(uint32_t queueElementsAmount, uint32_t queueElementSize)
 {
     QueueHandle_t hQueue = {0};
     hQueue = xQueueCreate(queueElementsAmount, queueElementSize);
     return (osal_queue_t)hQueue;
+}
+
+void osal_queue_delete(osal_queue_t queue)
+{
+    QueueHandle_t hQueue = (QueueHandle_t)queue;
+    vQueueDelete(hQueue);
 }
 
 bool osal_queue_send(osal_queue_t queue, const void *data, uint32_t timeout_ms, bool isIRQ)

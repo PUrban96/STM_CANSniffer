@@ -13,7 +13,7 @@ static void vTaskPCCommTransmiteFrame(void *pvParameters);
 static void PCCommTransmiter_FrameToMessage(const PCComm_Frame_s *Frame, uint8_t *Message);
 static PCCommLowLevel_Send_t TransmiterCallback = NULL;
 
-bool PCPCCommTransmiter_Init(PCCommLowLevel_Send_t SendCallback)
+bool PCCommTransmiter_Init(PCCommLowLevel_Send_t SendCallback)
 {
     TransmiterCallback = SendCallback;
     TransmiteBuffer_QueueHandler = osal_queue_create(TRANSMITE_QUEUE_SIZE, sizeof(PCComm_Frame_s));
