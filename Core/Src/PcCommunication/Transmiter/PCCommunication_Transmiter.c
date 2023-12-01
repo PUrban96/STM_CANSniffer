@@ -2,24 +2,22 @@
 #include "IPCCommunication_LowLevel.h"
 #include "PCCommunication_Transmiter.h"
 
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#include "OSAL.h"
 
 #include <string.h>
 
-static TaskHandle_t Transmite_TaskHandler = {0};
-static QueueHandle_t TransmiteBuffer_QueueHandler = {0};
+static osal_task_t Transmite_TaskHandler = {0};
+static osal_queue_t TransmiteBuffer_QueueHandler = {0};
 
 static void vTaskPCCommTransmiteFrame(void *pvParameters);
 static void PCCommTransmiter_FrameToMessage(const PCComm_Frame_s *Frame, uint8_t *Message);
 static PCCommLowLevel_Send_t TransmiterCallback = NULL;
 
-bool PCPCCommTransmiter_Init(PCCommLowLevel_Send_t SendCallback)
+bool PCCommTransmiter_Init(PCCommLowLevel_Send_t SendCallback)
 {
     TransmiterCallback = SendCallback;
-    TransmiteBuffer_QueueHandler = xQueueCreate(TRANSMITE_QUEUE_SIZE, sizeof(PCComm_Frame_s));
-    xTaskCreate(vTaskPCCommTransmiteFrame, "PCComm_Transmite", 400, NULL, 7, &Transmite_TaskHandler);
+    TransmiteBuffer_QueueHandler = osal_queue_create(TRANSMITE_QUEUE_SIZE, sizeof(PCComm_Frame_s));
+    Transmite_TaskHandler = osal_task_create(vTaskPCCommTransmiteFrame, "PCComm_Transmite", 400, NULL, 7);
     if (TransmiteBuffer_QueueHandler != NULL && Transmite_TaskHandler != NULL)
     {
         return true;
@@ -32,15 +30,8 @@ bool PCPCCommTransmiter_Init(PCCommLowLevel_Send_t SendCallback)
 
 bool PCCommTransmiter_Transmite(const PCComm_Frame_s *Frame)
 {
-    BaseType_t status = xQueueSend(TransmiteBuffer_QueueHandler, Frame, pdMS_TO_TICKS(0));
-    if (status == pdPASS)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    bool status = osal_queue_send(TransmiteBuffer_QueueHandler, Frame, 0, false);
+    return status;
 }
 
 static void vTaskPCCommTransmiteFrame(void *pvParameters)
@@ -51,8 +42,8 @@ static void vTaskPCCommTransmiteFrame(void *pvParameters)
 
     for (;;)
     {
-        BaseType_t status = xQueueReceive(TransmiteBuffer_QueueHandler, &CurrentFrame, pdMS_TO_TICKS(1000));
-        if (status == pdPASS)
+        bool status = osal_queue_receive(TransmiteBuffer_QueueHandler, &CurrentFrame, 1000, false);
+        if (status == true)
         {
             PCCommTransmiter_FrameToMessage(&CurrentFrame, CurrentMessage);
             TransmiterCallback(CurrentMessage, PCCOMM_FRAME_BYTE_AMOUNT);

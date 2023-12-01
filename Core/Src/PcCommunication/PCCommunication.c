@@ -14,7 +14,7 @@ void PCComm_Init(void)
     PCCommunication_LowLevel = IPCCommLowLevel_Init();
     PCCommunication_LowLevel->init();
     
-    PCPCCommTransmiter_Init(PCCommunication_LowLevel->send);
+    PCCommTransmiter_Init(PCCommunication_LowLevel->send);
     PCCommReceiver_Init(PCCommunication_LowLevel->receive);
 
     PCCommunication_LowLevel->subscribe(PCCommReceiver_AddFrameToBuffer);

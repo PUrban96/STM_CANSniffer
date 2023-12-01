@@ -27,6 +27,7 @@ set(INCLUDE_DIRS_APP
 
     Core/Inc
     Core/Src
+    Core/Src/OSAL
     Core/Src/DebugModule/stillAliveSignal
     Core/Src/PcCommunication
     Core/Src/HwDrivers/RCC_Clock
@@ -54,6 +55,7 @@ set(C_SRCS_SYSTEM
 set(C_SRCS_APP
 
     Core/Src/main.c
+    Core/Src/OSAL/OSAL.c
     Core/Src/DebugModule/stillAliveSignal/IstillAliveTimer.c
     Core/Src/DebugModule/stillAliveSignal/led_blink.c
     Core/Src/DebugModule/stillAliveSignal/stillAliveSignal.c
