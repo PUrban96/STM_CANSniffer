@@ -32,6 +32,7 @@ set(INCLUDE_DIRS_APP
     Core/Src/PcCommunication
     Core/Src/HwDrivers/RCC_Clock
     Core/Src/HwDrivers/USART2
+    Core/Src/HwDrivers/CAN1
     Core/Src/PcCommunication/Transmiter
     Core/Src/PcCommunication/Receiver
 )
@@ -67,6 +68,7 @@ set(C_SRCS_APP
     Core/Src/PcCommunication/USART2_driver.c
     Core/Src/HwDrivers/RCC_Clock/RCC_clock.c
     Core/Src/HwDrivers/USART2/USART2.c
+    Core/Src/HwDrivers/CAN1/CAN1.c
 )
 
 
