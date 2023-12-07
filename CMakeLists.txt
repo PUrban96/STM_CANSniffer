@@ -28,6 +28,7 @@ set(INCLUDE_DIRS_APP
     Core/Inc
     Core/Src
     Core/Src/OSAL
+    Core/Src/CAN
     Core/Src/DebugModule/stillAliveSignal
     Core/Src/PcCommunication
     Core/Src/HwDrivers/RCC_Clock
@@ -66,6 +67,7 @@ set(C_SRCS_APP
     Core/Src/PcCommunication/Transmiter/PCCommunication_Transmiter.c
     Core/Src/PcCommunication/Receiver/PCCommunication_Receiver.c
     Core/Src/PcCommunication/USART2_driver.c
+    Core/Src/CAN/ICAN_LowLevel.c
     Core/Src/HwDrivers/RCC_Clock/RCC_clock.c
     Core/Src/HwDrivers/USART2/USART2.c
     Core/Src/HwDrivers/CAN1/CAN1.c

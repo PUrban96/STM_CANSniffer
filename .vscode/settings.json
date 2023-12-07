@@ -12,6 +12,7 @@
     "rcc_clock.h": "c",
     "istillalivetimer.h": "c",
     "system_error": "c",
-    "pccommunication.h": "c"
+    "pccommunication.h": "c",
+    "ican_lowlevel.h": "c"
   }
 }

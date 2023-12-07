@@ -5,7 +5,7 @@ static void CAN1_InitialisationMode(void);
 static void CAN1_NormalMode(void);
 static void CAN1_ExitSleepMode(void);
 
-void CAN1_init(void)
+bool CAN1_init(void)
 {
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN; // GPIOB clock enable
     RCC->APB1ENR |= RCC_APB1ENR_CAN1EN;  // CAN1 clock enable
@@ -24,16 +24,22 @@ void CAN1_init(void)
     /* Request leave initialisation CAN_MCR_INRQ = 0*/
     /* Wait the acknowledge CAN_MSR_INAK */
     CAN1_NormalMode();
+
+    return true;
 }
 
-void CAN1_start(void)
+bool CAN1_start(void)
 {
     CAN1_NormalMode();
+
+    return true;
 }
 
-void CAN1_stop(void)
+bool CAN1_stop(void)
 {
     CAN1_InitialisationMode();
+
+    return true;
 }
 
 static void CAN1_InitialisationMode(void)
