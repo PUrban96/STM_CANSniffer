@@ -3,9 +3,23 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+typedef enum _CAN_LowLevel_Type_e
+{
+    CAN_LL_STD = 0,
+    CAN_LL_EXT = 1,
+} CAN_LowLevel_Type_e;
+
+typedef enum _CAN_LowLevel_RTR_e
+{
+    CAN_LL_RTR_DATA = 0,
+    CAN_LL_RTR_REMOTE = 1,
+}CAN_LowLevel_RTR_e;
+
 typedef struct _CANLowLevel_Frame_s
 {
     uint32_t CAN_LL_ID;
+    CAN_LowLevel_Type_e CAN_LL_TYPE;
+    CAN_LowLevel_RTR_e CAN_LL_RTR;
     uint8_t CAN_LL_DLC;
     uint8_t CAN_LL_DATA[8];
 } CANLowLevel_Frame_s;

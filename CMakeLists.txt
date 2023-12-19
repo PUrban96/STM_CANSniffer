@@ -68,6 +68,7 @@ set(C_SRCS_APP
     Core/Src/PcCommunication/Receiver/PCCommunication_Receiver.c
     Core/Src/PcCommunication/USART2_driver.c
     Core/Src/CAN/ICAN_LowLevel.c
+    Core/Src/CAN/CANCommunication.c
     Core/Src/HwDrivers/RCC_Clock/RCC_clock.c
     Core/Src/HwDrivers/USART2/USART2.c
     Core/Src/HwDrivers/CAN1/CAN1.c

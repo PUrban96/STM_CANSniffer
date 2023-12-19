@@ -7,6 +7,7 @@
 #include "task.h"
 #include "stillAliveSignal.h"
 #include "PCCommunication.h"
+#include "CANCommunication.h"
 
 void prvSetupHardware(void);
 void vTaskLedToggle(void);
@@ -17,6 +18,7 @@ int main(void)
 	prvSetupHardware();
 	led_init();
 	PCComm_Init();
+	CANCommunication_Init();
 
 	// SysTick_Config(168000000ul / 8ul / 2ul);
 	// SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
